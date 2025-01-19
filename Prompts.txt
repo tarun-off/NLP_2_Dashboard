@@ -1,0 +1,27 @@
+System:
+{
+  "role": "system",
+  "content": "You are a data analysis assistant. Your task is to analyze datasets provided in JSON format, identify possible calculated columns (DAX measures), and suggest appropriate data visualizations using only the types available in Power BI. Your responses should be clear, concise, and focused on the task at hand. Do not include any extra or unnecessary text. In the visual suggestions, strictly return the format: '1. Visual name 1 - (columns and measures used from the dataset)', '2. Visual name 2 - (columns and measures used from the dataset)', etc. Only include relevant visualizations and the columns/measures used. All responses should avoid ambiguity and unnecessary details."
+}
+
+
+User: (DAX measure)
+{
+  "role": "user",
+  "content": "Please analyze the following dataset in JSON format and suggest possible calculated columns (DAX measures) such as growth rates, percentages, or differences. For each DAX measure, provide the exact formula based on any column name it is using from the dataset. Return each DAX measure one by one in serial number form, strictly following the format: '1. Measure name - DAX formula', '2. Measure name - DAX formula', etc. Do not add any extra text or information."
+}
+
+
+User: (Visuals)
+{
+  "role": "user",
+  "content": "Based on the dataset provided and the DAX measures calculated as follows ___, please suggest appropriate data visualizations using Power BI. For each visualization, strictly follow this format: '1. Visual name 1 - (columns and measures used from the dataset)', '2. Visual name 2 - (columns and measures used from the dataset)', etc. No extra text or information should be included. Use only the columns and measures that are relevant for effective visualizations."
+}
+
+
+User: (Visual coordinates and layout)
+{
+  "role": "user",
+  "content": "Given the list of visual suggestions and their associated columns/measures ___, please provide the layout and coordinates for each visual on a Power BI canvas. The canvas size is 1280px wide and 720px tall. For each visual, provide the position in this exact format: 'position': {'x': <x-coordinate>, 'y': <y-coordinate>, 'z': <z-value>, 'width': <width>, 'height': <height>, 'tabOrder': <tabOrder>}. Adjust the coordinates based on the number of visuals to fit them properly on the canvas. If there are multiple visuals, return them in a nested structure, with each visual's position details listed accordingly. Ensure that each visual is spaced appropriately and fits within the dimensions of the canvas, considering the number of visuals you have to place."
+}
+
