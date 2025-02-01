@@ -138,42 +138,76 @@ response_4, _ = analyze_dataset(
 )
 
 # Define the fifth prompt
-user_prompt_5 = """I have a dataset {data_str} and a list of Power BI visualizations like {response_2} and also appropriate dax measures/calculated columns for the dataset like Based on the DAX measures calculated as follows {response_1} that I want to use. For each visualization, tell me which columns from the dataset are required (including calculated columns/dax measures).
-The exact configuration for the visual, such as whether it requires "x", "y", "legend", "rows", "columns", "values", and "tooltips" as per Power BI standards.
-Return the output in JSON format, including only the relevant parameters and configuration for each visual:
-{
-  "visuals": [
-    {
-      "name": "<visual_name>",
-      "requiredColumns": ["<column_name>", "<column_name>"],
-      "calculatedColumns": ["<calculated_column>"],
-      "x": "<x_column>",
-      "y": "<y_column>",
-      "legend": "<legend_column>",
-      "rows": ["<row_column>"],
-      "columns": ["<column_name>"],
-      "values": ["<value_column>"],
-      "tooltips": ["<tooltip_column>"]
-    }
-  ]
+# user_prompt_5 = """I have a dataset {data_str} and a list of Power BI visualizations like {response_2} and also appropriate dax measures/calculated columns for the dataset like Based on the DAX measures calculated as follows {response_1} that I want to use. For each visualization, tell me which columns from the dataset are required (including calculated columns/dax measures).
+# The exact configuration for the visual, such as whether it requires "x", "y", "legend", "rows", "columns", "values", and "tooltips" as per Power BI standards.
+# Return the output in JSON format, including only the relevant parameters and configuration for each visual:
+# {
+#   "visuals": [
+#     {
+#       "name": "<visual_name>",
+#       "requiredColumns": ["<column_name>", "<column_name>"],
+#       "calculatedColumns": ["<calculated_column>"],
+#       "x": "<x_column>",
+#       "y": "<y_column>",
+#       "legend": "<legend_column>",
+#       "rows": ["<row_column>"],
+#       "columns": ["<column_name>"],
+#       "values": ["<value_column>"],
+#       "tooltips": ["<tooltip_column>"]
+#     }
+#   ]
+# }
+# Ensure you: Identify the correct columns, calculated columns, and measures needed for each visual.
+# Specify whether the visual requires "x", "y", "legend", "rows", "columns", "values", and "tooltips" as per Power BI.
+# """
+
+# # Call the function with the fifth prompt
+# response_5, _ = analyze_dataset(
+#     api_key=api_key,
+#     model_name=model_name,
+#     dataset_path=dataset_path,
+#     sheet_name=sheet_name,
+#     sample_frac=sample_frac,
+#     user_prompt=user_prompt_5,
+#     previous_responses={"response_1": response_1, "response_2": response_2}
+# )
+
+visual_parameters_list="""{
+"tableEx": [Columns] ,
+"scorecard": [Fields],
+"cardVisual": [Data],
+"kpi": [Value, Trend axis, Target],
+"gauge": [Value, Minimum value, Maximum value, Target value],
+"multiRowCard": [Fields],
+"filledMap": [Location, Legend, Latitude, Longitude],
+"treemap": [Category, Details, Values],
+"map": [Location, Legend, Latitude, Longitude, Bubble size],
+"donutChart": [Legend, Values, Details],
+"pieChart": [Legend, Values, Details],
+"scatterChart": [Values, X-axis, Y-axis, Legend],
+"funnel": [Category, Values],
+"waterfallChart": [Category, Breakdown, Y-axis],
+"ribbonChart": [X-axis, Y-axis, Legend, Small multiples],
+"lineClusteredColumnComboChart": [X-axis, Column y-axis, Line y-axis, Column legend, Small multiples],
+"lineStackedColumnComboChart": [X-axis, Column y-axis, Line y-axis, Column legend, Small multiples],
+"hundredPercentStackedAreaChart": [X-axis, Y-axis, Legend, Small multiples],
+"stackedAreaChart": [X-axis, Y-axis, Legend, Small multiples],
+areaChart": [X-axis, Y-axis, Secondary y-axis, Legend, Small multiples],
+"lineChart": [X-axis, Y-axis, Secondary y-axis, Legend, Small multiples],
+"hundredPercentStackedColumnChart": [X-axis, Y-axis, Legend, Small multiples],
+"hundredPercentStackedBarChart": [X-axis, Y-axis, Legend, Small multiples],
+"clusteredBarChart": [X-axis, Y-axis, Legend, Small multiples],
+"columnChart": [X-axis, Y-axis, Legend, Small multiples],
+"barChart": [X-axis, Y-axis, Legend, Small multiples],
+"pivotTable": [Rows, Columns, Values],
+"decompositionTree": [Analyze, Explain by],
+"keyInfluencers": [Analyze, Explain by, Expand by]
 }
-Ensure you: Identify the correct columns, calculated columns, and measures needed for each visual.
-Specify whether the visual requires "x", "y", "legend", "rows", "columns", "values", and "tooltips" as per Power BI.
-"""
-
-# Call the function with the fifth prompt
-response_5, _ = analyze_dataset(
-    api_key=api_key,
-    model_name=model_name,
-    dataset_path=dataset_path,
-    sheet_name=sheet_name,
-    sample_frac=sample_frac,
-    user_prompt=user_prompt_5,
-    previous_responses={"response_1": response_1, "response_2": response_2}
-)
-
+ """
 # Define the sixth prompt
-user_prompt_6 = """Given the following visual parameters {visual_parameters_list} list for Power BI visualizations and a dataset {data_str}, determine which columns fit which parameters for the given visualizations:{response_2}. When certain columns need to be summed for the visualizations, include a new parameter called Sum with the list of parameters (like "Sum": ["Values", "Y-axis"]) where those summed columns should be used. Please return the output in JSON format without deviation, using the structure provided."""
+user_prompt_6 = """Given the following visual parameters {visual_parameters_list} list for Power BI visualizations and a dataset {data_str}, determine which columns fit which parameters for the given visualizations:{response_2}. Please return the output in JSON format exactly as specified, following the provided structure. For each visualization, only include the parameters that are truly required for that specific chart. If a parameter is not needed, leave it out entirely.
+
+For parameters where summing is necessary (such as in cases where numerical data needs to be aggregated), ensure the appropriate column depending on which paramter it is going to be included, is summed and indicate this using the Sum field. For example, if the sum is applied to the Y-Axis, include Sum: ["Y-Axis"]. Do not include empty or unnecessary parameters."""
 
 # Call the function with the sixth prompt
 response_6, _ = analyze_dataset(
@@ -200,8 +234,8 @@ print(response_3)
 print("\nResponse 4:")
 print(response_4)
 
-print("\nResponse 5:")
-print(response_5)
+# print("\nResponse 5:")
+# print(response_5)
 
 print("\nResponse 6:")
 print(response_6)
