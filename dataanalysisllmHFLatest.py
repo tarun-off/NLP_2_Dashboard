@@ -87,7 +87,7 @@ on a 1280px (width) x 720px (height) Power BI canvas. Strictly follow this json 
    "visuals": [
       "name": "<visual_name>", "position": "x": <x-coordinate>, "y": <y-coordinate>, "z": <z-value>, "width": <width>, "height": <height>, "tabOrder": <tabOrder>
   ] Adjust the coordinates ensuring all visuals fit within the dimensions without overlap in a structured and clear layout based on the number of visuals you have to place.
-  Ensure the positioning is logical and organized within the canvas dimensions to fit the entire canvas."""
+  Ensure the positioning is logical and organized within the canvas dimensions to fit the entire canvas. Please do not give any other information"""
 
 response_3, _ = analyze_dataset(
     api_key=api_key, model_name=model_name, dataset_path=dataset_path, sheet_name=sheet_name, 
@@ -96,7 +96,7 @@ response_3, _ = analyze_dataset(
 
 # Prompt 4: Identify column datatypes
 user_prompt_4 = """Analyze this dataset {data_str} and return a dictionary where each column is mapped to its datatype using the exact name of columns as given in the dataset. 
-Strictly follow the json Format: "Column1": "int64", "Column2": "double", "Column3": "String" """
+Strictly follow the json Format: "Column1": "int64", "Column2": "double", "Column3": "String". Please do not add any other information."""
 
 response_4, _ = analyze_dataset(
     api_key=api_key, model_name=model_name, dataset_path=dataset_path, sheet_name=sheet_name, 
@@ -118,7 +118,7 @@ user_prompt_6 = """Given these visual parameters {visual_parameters_list} and da
 determine which dataset columns fit which parameters for visuals {response_2}.Return the output in JSON format, exactly as specified following the provided structure of visual parameters list, add curly brackets as required in json. 
 The value for each parameter should be strictly from the column list of dataset, only include the parameters that are truly required from powerbi visualization point of view for that specific visual. If a parameter is not needed, leave it out entirely.
 For parameters where summing is necessary (such as in cases where numerical data needs to be aggregated), ensure the appropriate column depending on which parameter it is going to be included, is summed and indicate this using the Sum field. 
-For example, if the sum is applied to a column inside the X-Axis parameter, include a new parameter Sum:[X-axis] in the same format as other parameters in visual parameters list, Do not include Sum parameter if no column is being summed.The Sum field should refer to the parameter, not a dataset column. Do not include empty parameters.
+For example, if the sum is applied to a column inside the X-Axis parameter, include a new parameter Sum:[X-axis] in the same format as other parameters in visual parameters list, Do not include Sum parameter if no column is being summed.The Sum field should refer to the parameter, not a dataset column. Do not include empty parameters. Please do not add any other information.
 """
 
 response_6, _ = analyze_dataset(
