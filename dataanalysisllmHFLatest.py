@@ -71,15 +71,47 @@ visuals_list = ["tableEx", "scorecard", "cardVisual", "kpi", "gauge", "multiRowC
                 "stackedAreaChart", "areaChart", "lineChart", "hundredPercentStackedColumnChart", 
                 "hundredPercentStackedBarChart", "clusteredBarChart", "columnChart", "barChart"]
 
-
 # Prompt 2: Suggest visualizations based on calculated columns
 user_prompt_2 = """Based on the dataset {data_str}, please suggest appropriate Power BI visuals from this list {visuals_list}. 
 Strictly follow this Format do not add any more information, strictly only give the names as given in the list in one word: '1. Visual name', '2. Visual name', etc. Visual name should be from the given visuals list. Provide exactly 4 visualizations."""
 
-response_2, _ = analyze_dataset(
-    api_key=api_key, model_name=model_name, dataset_path=dataset_path, sheet_name=sheet_name, 
-    sample_frac=sample_frac, user_prompt=user_prompt_2, extra_variables={"visuals_list": visuals_list}
-)
+user_satisfied = False  # Variable to track user satisfaction
+
+while not user_satisfied:
+    # Generate initial visual suggestions
+    response_2, _ = analyze_dataset(
+        api_key=api_key, model_name=model_name, dataset_path=dataset_path, sheet_name=sheet_name, 
+        sample_frac=sample_frac, user_prompt=user_prompt_2, extra_variables={"visuals_list": visuals_list}
+    )
+
+    # Ask user for confirmation
+    print("\nSuggested Visuals:\n", response_2)
+    user_input = input("\nDo you like these visual suggestions? (You can respond in natural language): ")
+    
+    # Let GenAI interpret the response
+    interpretation_prompt = f"""The user responded: '{user_input}'. 
+    Determine if this response means acceptance or rejection.
+    Answer strictly in one word: 'yes' if they agree, 'no' if they do not. Provide no explanation, only 'yes' or 'no'."""
+
+    interpreted_response, _ = analyze_dataset(
+        api_key=api_key, model_name=model_name, dataset_path=dataset_path, sheet_name=sheet_name, 
+        sample_frac=sample_frac, user_prompt=interpretation_prompt
+    )
+
+    # Normalize response
+    interpreted_response = interpreted_response.strip().lower()
+    interpreted_response="yes"
+
+    if interpreted_response == "yes":
+        user_satisfied = True  # Exit loop if user is happy
+    else:
+        # Modify prompt to indicate user dissatisfaction
+        user_prompt_2 = """My user is not happy with these visual suggestions {response_2}, please suggest something better. 
+        Strictly follow the format as before: '1. Visual name', '2. Visual name', etc. The names must come from the provided visuals list {visuals_list}. 
+        Provide exactly 4 visualizations."""
+    
+        print("Generating new suggestions...\n", response_2)
+
 
 # Prompt 3: Define layout for visuals
 user_prompt_3 = """Given these visual suggestions {response_2}, please provide the layout and coordinates for each visual from the suggestions.
@@ -115,10 +147,10 @@ visual_parameters_list = """
 """
 
 user_prompt_6 = """Given these visual parameters {visual_parameters_list} and dataset {data_str}, 
-determine which dataset columns fit which parameters for visuals {response_2}.Return the output in JSON format, exactly as specified following the provided structure of visual parameters list, add curly brackets as required in json. 
+determine which dataset columns fit which parameters for visuals {response_2}.Return the output in JSON format, exactly as specified following the provided structure of visual parameters list. 
 The value for each parameter should be strictly from the column list of dataset, only include the parameters that are truly required from powerbi visualization point of view for that specific visual. If a parameter is not needed, leave it out entirely.
 For parameters where summing is necessary (such as in cases where numerical data needs to be aggregated), ensure the appropriate column depending on which parameter it is going to be included, is summed and indicate this using the Sum field. 
-For example, if the sum is applied to a column inside the X-Axis parameter, include a new parameter Sum:[X-axis] in the same format as other parameters in visual parameters list, Do not include Sum parameter if no column is being summed.The Sum field should refer to the parameter, not a dataset column. Do not include empty parameters. Please do not add any other information.
+For example, if the sum is applied to a column inside the X-Axis parameter, include a new parameter Sum:[X-axis] in the same format as other parameters in visual parameters list, Do not include Sum parameter if no column is being summed.The Sum field should refer to the parameter, not a dataset column. Do not include empty parameters. Do not add any other information.
 """
 
 response_6, _ = analyze_dataset(
@@ -127,12 +159,21 @@ response_6, _ = analyze_dataset(
     previous_responses={"response_2": response_2}, extra_variables={"visual_parameters_list": visual_parameters_list}
 )
 
+user_prompt_7= """Please convert this response {response_6} to json format. Do not add any other information."""
+response_7, _ = analyze_dataset(
+    api_key=api_key, model_name=model_name, dataset_path=dataset_path, sheet_name=sheet_name, 
+    sample_frac=sample_frac, user_prompt=user_prompt_7, 
+    previous_responses={"response_6": response_6}
+)
+
+
 # Print all responses
 
 print("\nResponse 2:\n", response_2)
 print("\nResponse 3:\n", response_3)
 print("\nResponse 4:\n", response_4)
 print("\nResponse 6:\n", response_6)
+print("\nResponse 7:\n", response_7)
 
 
 
