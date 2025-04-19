@@ -7,11 +7,10 @@ system_prompt = {
 
 
 
-User: (DAX measure)
-{
-  "role": "user",
-  "content": "Please analyze the following dataset in JSON format and suggest possible calculated columns (DAX measures) such as growth rates, percentages, or differences. For each DAX measure, provide the exact formula based on any column name it is using from the dataset. Return each DAX measure one by one in serial number form, strictly following the format: '1. Measure name - DAX formula', '2. Measure name - DAX formula', etc. Do not add any extra text or information."
-}
+# Prompt 2: Suggest visualizations based on calculated columns
+user_prompt_2 = """Based on the dataset {data_str}, please suggest appropriate Power BI visuals from this list {visuals_list}. 
+Strictly follow this Format do not add any more information, strictly only give the names as given in the list in one word: '1. Visual name', '2. Visual name', etc. Visual name should be from the given visuals list. Provide exactly 4 visualizations."""
+
 
 
 User: (Visuals)
