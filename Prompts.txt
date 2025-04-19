@@ -13,11 +13,14 @@ Strictly follow this Format do not add any more information, strictly only give 
 
 
 
-User: (Visuals)
-{
-  "role": "user",
-  "content": "Based on the dataset provided and the DAX measures calculated as follows ___, please suggest appropriate data visualizations using Power BI. For each visualization, strictly follow this format: '1. Visual name 1 - (columns and measures used from the dataset)', '2. Visual name 2 - (columns and measures used from the dataset)', etc. No extra text or information should be included. Use only the columns and measures that are relevant for effective visualizations."
-}
+# Prompt 3: Define layout for visuals
+user_prompt_3 = """Given these visual suggestions {response_2}, please provide the layout and coordinates for each visual from the suggestions.
+on a 1280px (width) x 720px (height) Power BI canvas. Strictly follow this json Format add the curly brackets for visuals inside and do not add anything extra in the json, also add curly brackets for the position parameters x y and z together:
+   "visuals": [
+      "name": "<visual_name>", "position": "x": <x-coordinate>, "y": <y-coordinate>, "z": <z-value>, "width": <width>, "height": <height>, "tabOrder": <tabOrder>
+  ] Adjust the coordinates ensuring all visuals fit within the dimensions without overlap in a structured and clear layout based on the number of visuals you have to place.
+  Ensure the positioning is logical and organized within the canvas dimensions to fit the entire canvas. Please do not give any other information"""
+
 
 
 User: (Visual coordinates and layout)
