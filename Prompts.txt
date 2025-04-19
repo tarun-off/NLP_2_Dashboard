@@ -23,9 +23,8 @@ on a 1280px (width) x 720px (height) Power BI canvas. Strictly follow this json 
 
 
 
-User: (Visual coordinates and layout)
-{
-  "role": "user",
-  "content": "Given the list of visual suggestions and their associated columns/measures ___, please provide the layout and coordinates for each visual on a Power BI canvas. The canvas size is 1280px wide and 720px tall. For each visual, provide the position in this exact format: 'position': {'x': <x-coordinate>, 'y': <y-coordinate>, 'z': <z-value>, 'width': <width>, 'height': <height>, 'tabOrder': <tabOrder>}. Adjust the coordinates based on the number of visuals to fit them properly on the canvas. If there are multiple visuals, return them in a nested structure, with each visual's position details listed accordingly. Ensure that each visual is spaced appropriately and fits within the dimensions of the canvas, considering the number of visuals you have to place."
-}
+# Prompt 4: Identify column datatypes
+user_prompt_4 = """Analyze this dataset {data_str} and return a dictionary where each column is mapped to its datatype using the exact name of columns as given in the dataset. 
+Strictly follow the json Format: "Column1": "int64", "Column2": "double", "Column3": "String". Please do not add any other information."""
+
 
