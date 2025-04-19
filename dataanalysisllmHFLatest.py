@@ -57,11 +57,11 @@ def analyze_dataset(api_key, model_name, dataset_path, sheet_name, sample_frac, 
 
 
 # Example usage
-api_key = "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"
+api_key = "*"
 #model_name = "meta-llama/Llama-3.2-3B-Instruct"
 #model_name = "mistralai/Mistral-7B-Instruct-v0.2"
 model_name = "microsoft/Phi-3.5-mini-instruct"
-dataset_path = 'C:\\Users\\mehvash\\Documents\\Projects\\NL to Dashboard\\credit_risk_dataset.xlsx'
+dataset_path = '*\\credit_risk_dataset.xlsx'
 sheet_name = 'credit_risk_dataset'
 sample_frac = 0.0006
 
