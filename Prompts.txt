@@ -33,3 +33,4 @@ The value for each parameter should be strictly from the column list of dataset,
 For parameters where summing is necessary (such as in cases where numerical data needs to be aggregated), ensure the appropriate column depending on which parameter it is going to be included, is summed and indicate this using the Sum field. 
 For example, if the sum is applied to a column inside the X-Axis parameter, include a new parameter Sum:[X-axis] in the same format as other parameters in visual parameters list, Do not include Sum parameter if no column is being summed.The Sum field should refer to the parameter, not a dataset column. Do not include empty parameters. Do not add any other information.
 """
+user_prompt_7= """Please convert this response {response_6} to json format. Do not add any other information."""
