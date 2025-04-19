@@ -27,4 +27,9 @@ on a 1280px (width) x 720px (height) Power BI canvas. Strictly follow this json 
 user_prompt_4 = """Analyze this dataset {data_str} and return a dictionary where each column is mapped to its datatype using the exact name of columns as given in the dataset. 
 Strictly follow the json Format: "Column1": "int64", "Column2": "double", "Column3": "String". Please do not add any other information."""
 
-
+user_prompt_6 = """Given these visual parameters {visual_parameters_list} and dataset {data_str}, 
+determine which dataset columns fit which parameters for visuals {response_2}.Return the output in JSON format, exactly as specified following the provided structure of visual parameters list. 
+The value for each parameter should be strictly from the column list of dataset, only include the parameters that are truly required from powerbi visualization point of view for that specific visual. If a parameter is not needed, leave it out entirely.
+For parameters where summing is necessary (such as in cases where numerical data needs to be aggregated), ensure the appropriate column depending on which parameter it is going to be included, is summed and indicate this using the Sum field. 
+For example, if the sum is applied to a column inside the X-Axis parameter, include a new parameter Sum:[X-axis] in the same format as other parameters in visual parameters list, Do not include Sum parameter if no column is being summed.The Sum field should refer to the parameter, not a dataset column. Do not include empty parameters. Do not add any other information.
+"""
