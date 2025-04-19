@@ -8,7 +8,7 @@ from Finale_backend import psuedo_main
 from dataanalysisllmHFLatest import analyze_dataset  # Import the LLM function
 
 # Constants
-api_key = "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"
+api_key = "*"
 model_name = "microsoft/Phi-3.5-mini-instruct"
 sample_frac = 0.0006
 visuals_list = ["tableEx", "scorecard", "cardVisual", "kpi", "gauge", "multiRowCard", "filledMap", "treemap", "map", 
