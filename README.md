@@ -49,3 +49,14 @@ By combining the power of **LLMs**, **data pattern recognition**, and **automate
 
 This project was designed to bridge the gap between **natural language** and **data storytelling**, 
 making it easy for anyone to create meaningful dashboards without needing deep technical skills or BI tool expertise.
+
+---
+
+## 🚀 How It Works
+
+1. **User Uploads Dataset**: Excel (XLSX) file via the Streamlit UI.
+2. **Prompt Input**: User enters a natural language query about the dataset.
+3. **Insight Generation**: LLM interprets the data, identifies patterns, and recommends visual insights.
+4. **Template Creation**: Backend generates and modifies a Power BI `.pbit` file using custom logic.
+5. **Downloadable Output**: User downloads the auto-generated dashboard template.
+
